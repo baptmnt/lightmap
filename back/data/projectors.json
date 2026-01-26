@@ -1,0 +1,48 @@
+
+[
+    {
+        "name": "PAR64 CP60",
+        "filename": "assets/projectors/par64-cp60.png",
+        "size": 4
+    },
+    {
+        "name": "PAR64 CP61",
+        "filename": "assets/projectors/par64-cp61.png",
+        "size": 4
+    },
+    {
+        "name": "PAR64 CP62",
+        "filename": "assets/projectors/par64-cp62.png",
+        "size": 4
+    },
+    {
+        "name": "PAR64 CP95",
+        "filename": "assets/projectors/par64-cp95.png",
+        "size": 4
+    },
+    {
+        "name": "PAR16",
+        "filename": "assets/projectors/par16.png",
+        "size": 1
+    },
+    {
+        "name": "F1",
+        "filename": "assets/projectors/f1.png",
+        "size": 1
+    },
+    {
+        "name": "PC 1K",
+        "filename": "assets/projectors/pc-1k.png",
+        "size": 4
+    },
+    {
+        "name": "PC 650",
+        "filename": "assets/projectors/pc-650.png",
+        "size": 3
+    },
+    {
+        "name": "PC 500",
+        "filename": "assets/projectors/pc-500.png",
+        "size": 2
+    }
+]
