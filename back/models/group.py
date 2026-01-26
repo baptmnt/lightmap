@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String
 
 if TYPE_CHECKING:
-    from .projector import Projector
+    from .projector import LightmapProjector
 
 
 
@@ -17,12 +17,14 @@ class Group(db.Model):
     
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(80), unique=True, nullable=False)
-    projectors: Mapped[list["Projector"]] = relationship(secondary=group_association_table, back_populates="groups")
+    lightmap_projectors: Mapped[list["LightmapProjector"]] = relationship(
+        secondary=group_association_table,
+        back_populates="groups",
+    )
     
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
-            'description': self.description
         }
     
