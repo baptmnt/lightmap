@@ -18,7 +18,7 @@ class Lightmap(db.Model):
     name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     date: Mapped[date] = mapped_column(Date, nullable=True)
 
-    background_id: Mapped[int] = mapped_column(ForeignKey('backgrounds.id'), nullable=True)
+    background_id: Mapped[int] = mapped_column(ForeignKey('backgrounds.id'), nullable=False)
     background: Mapped["Background"] = relationship()
     
     projectors: Mapped[list["LightmapProjector"]] = relationship(back_populates="lightmap")
@@ -26,8 +26,15 @@ class Lightmap(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'filename': self.filename,
+            'name': self.name,
             'date': self.date.isoformat() if self.date else None,
             'background': self.background.to_dict() if self.background else None,
             'projectors': [lp.to_dict() for lp in self.projectors] if self.projectors else []
+        }
+
+    def to_summary(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'date': self.date.isoformat() if self.date else None,
         }

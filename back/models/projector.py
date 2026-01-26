@@ -19,6 +19,7 @@ class Projector(db.Model):
     name: Mapped[str] = mapped_column(String(80), unique=True, nullable=False)
     filename: Mapped[str] = mapped_column(String(120), nullable=True)
     size: Mapped[int] = mapped_column(Integer, nullable=True, default=512)
+    is_led: Mapped[bool] = mapped_column(nullable=False, default=False)
     modes: Mapped[list["Mode"]] = relationship()
     
     def to_dict(self):
@@ -27,6 +28,7 @@ class Projector(db.Model):
             'name': self.name,
             'filename': self.filename,
             'size': self.size,
+            'is_led': self.is_led,
             'modes': [mode.to_dict() for mode in self.modes],
         }
 
