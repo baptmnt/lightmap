@@ -3,6 +3,7 @@ from config import Config
 # Import models BEFORE db initialization to register metadata
 from models import *
 from models.db import db
+from api import api_bp
 
 
 
@@ -17,6 +18,9 @@ app.config.from_object(Config)
 
 # Initialiser SQLAlchemy
 db.init_app(app)
+
+# Register API blueprint
+app.register_blueprint(api_bp)
 
 
 
