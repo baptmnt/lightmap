@@ -37,7 +37,7 @@ class LightmapProjector(db.Model):
     __tablename__ = 'lightmap_projectors'
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    label: Mapped[str] = mapped_column(String(80), unique=True, nullable=False)
+    label: Mapped[str] = mapped_column(String(80), nullable=True)
 
     projector_id: Mapped[int] = mapped_column(ForeignKey('projectors.id'), nullable=False)
     projector: Mapped["Projector"] = relationship()
