@@ -9,6 +9,7 @@ from app import app
 from models.db import db
 from models.projector import Projector
 from models.background import Background
+from models.gelatine import Gelatine
 
 DATA_DIR = Path(__file__).parent / "data"
 
@@ -63,12 +64,39 @@ def seed_backgrounds() -> tuple[int, int]:
     return inserted, updated
 
 
+def seed_gelatines() -> tuple[int, int]:
+    records = _load_json("gelatines.json")
+    inserted = 0
+    updated = 0
+    for payload in records:
+        number = payload["number"]
+        gel = Gelatine.query.filter_by(number=number).first()
+        if gel:
+            gel.name = payload.get("name")
+            gel.hex_color = payload.get("hex_color")
+            gel.is_diffuser = payload.get("is_diffuser", False)
+            updated += 1
+            continue
+        gel = Gelatine(
+            number=number,
+            name=payload.get("name"),
+            hex_color=payload.get("hex_color"),
+            is_diffuser=payload.get("is_diffuser", False),
+        )
+        db.session.add(gel)
+        inserted += 1
+    db.session.commit()
+    return inserted, updated
+
+
 def run():
     with app.app_context():
         inserted, updated = seed_projectors()
         print(f"Projectors: inserted={inserted}, updated={updated}")
         inserted, updated = seed_backgrounds()
         print(f"Backgrounds: inserted={inserted}, updated={updated}")
+        inserted, updated = seed_gelatines()
+        print(f"Gelatines: inserted={inserted}, updated={updated}")
 
 
 if __name__ == "__main__":
