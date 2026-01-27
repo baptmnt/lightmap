@@ -1,5 +1,6 @@
 from flask import jsonify, request, abort
 
+from models.gelatine import Gelatine
 from models.lightmap import Lightmap
 from models.projector import Projector, LightmapProjector
 from models.db import db
@@ -20,7 +21,7 @@ def add_projector_to_lightmap(lightmap_id: int):
     z_level = payload.get("z_level", 0)
     angle = payload.get("angle", 0.0)
     size = payload.get("size", 1.0)
-    gelatine = payload.get("gelatine")
+    gelatines = payload.get("gelatines")
     mode_id = payload.get("mode_id")
     channel = payload.get("channel")
     universe = payload.get("universe")
@@ -46,13 +47,25 @@ def add_projector_to_lightmap(lightmap_id: int):
         z_level=z_level,
         angle=angle,
         size=size,
-        gelatine=gelatine,
         mode_id=mode_id,
         channel=channel,
         universe=universe,
         address=address,
     )
     db.session.add(lm_proj)
+
+    if gelatines:
+        print(gelatines)
+        lm_proj.gelatines = []
+        for gel_id in gelatines:
+            print("="*10)
+            print(gel_id)
+            gel = Gelatine.query.get(gel_id)
+            print(gel)
+            if gel:
+                lm_proj.gelatines.append(gel)
+
+
     db.session.commit()
     return jsonify(lm_proj.to_dict()), 201
 
