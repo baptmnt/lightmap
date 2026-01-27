@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .db import db
-from .association import group_association_table
+from .association import group_association_table, gelatine_association_table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Integer, ForeignKey
 
@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from .mode import Mode
     from .group import Group
     from .lightmap import Lightmap
+    from .gelatine import Gelatine
 
 class Projector(db.Model):
     __tablename__ = 'projectors'
@@ -50,8 +51,7 @@ class LightmapProjector(db.Model):
     angle: Mapped[float] = mapped_column(nullable=False, default=0.0)
     size: Mapped[float] = mapped_column(nullable=False, default=1.0)
 
-
-    gelatine: Mapped[str] = mapped_column(String(80), nullable=True)
+    gelatines: Mapped[list["Gelatine"]] = relationship(secondary=gelatine_association_table, backref="lightmap_projectors")
 
     mode_id: Mapped[int] = mapped_column(ForeignKey('modes.id'), nullable=True)
     mode: Mapped["Mode"] = relationship()
@@ -72,7 +72,7 @@ class LightmapProjector(db.Model):
             'x': self.x,
             'y': self.y,
             'z_level': self.z_level,
-            'gelatine': self.gelatine,
+            'gelatines': [g.to_dict() for g in self.gelatines],
             'mode': self.mode.to_dict() if self.mode else None,
             'channel': self.channel,
             'universe': self.universe,
