@@ -1,0 +1,566 @@
+[
+  {
+    "number": "LEE 100",
+    "name": "Spring Yellow",
+    "hex_color": "#F9E547",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 101",
+    "name": "Yellow",
+    "hex_color": "#FFE41D",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 102",
+    "name": "Light Amber",
+    "hex_color": "#FFD042",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 103",
+    "name": "Straw",
+    "hex_color": "#FFE589",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 104",
+    "name": "Deep Amber",
+    "hex_color": "#FF9900",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 105",
+    "name": "Orange",
+    "hex_color": "#FF7700",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 106",
+    "name": "Primary Red",
+    "hex_color": "#E60000",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 107",
+    "name": "Light Rose",
+    "hex_color": "#FFB3C7",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 108",
+    "name": "English Rose",
+    "hex_color": "#FF8FB3",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 109",
+    "name": "Light Salmon",
+    "hex_color": "#FF9E80",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 110",
+    "name": "Middle Rose",
+    "hex_color": "#FF6F9E",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 111",
+    "name": "Dark Pink",
+    "hex_color": "#FF4D7F",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 113",
+    "name": "Magenta",
+    "hex_color": "#FF00AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 115",
+    "name": "Peacock Blue",
+    "hex_color": "#0088CC",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 116",
+    "name": "Medium Blue-Green",
+    "hex_color": "#0099AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 117",
+    "name": "Steel Blue",
+    "hex_color": "#5599CC",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 118",
+    "name": "Light Blue",
+    "hex_color": "#7FCCFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 119",
+    "name": "Dark Blue",
+    "hex_color": "#0044AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 120",
+    "name": "Deep Blue",
+    "hex_color": "#0033AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 121",
+    "name": "Filter Blue",
+    "hex_color": "#0055DD",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 124",
+    "name": "Dark Green",
+    "hex_color": "#006633",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 126",
+    "name": "Mauve",
+    "hex_color": "#AA66CC",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 127",
+    "name": "Smokey Pink",
+    "hex_color": "#CC99AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 128",
+    "name": "Bright Pink",
+    "hex_color": "#FF66AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 131",
+    "name": "Marine Blue",
+    "hex_color": "#0066AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 132",
+    "name": "Medium Blue",
+    "hex_color": "#4488DD",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 134",
+    "name": "Golden Amber",
+    "hex_color": "#FFAA33",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 135",
+    "name": "Deep Golden Amber",
+    "hex_color": "#FF8800",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 136",
+    "name": "Pale Lavender",
+    "hex_color": "#D4BBEE",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 137",
+    "name": "Special Lavender",
+    "hex_color": "#BB99DD",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 138",
+    "name": "Pale Green",
+    "hex_color": "#99DD99",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 139",
+    "name": "Primary Green",
+    "hex_color": "#00AA00",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 141",
+    "name": "Bright Blue",
+    "hex_color": "#0088FF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 142",
+    "name": "Pale Violet",
+    "hex_color": "#CCAAFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 143",
+    "name": "Pale Navy Blue",
+    "hex_color": "#6699CC",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 147",
+    "name": "Apricot",
+    "hex_color": "#FFBB77",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 148",
+    "name": "Bright Rose",
+    "hex_color": "#FF5599",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 151",
+    "name": "Gold Tint",
+    "hex_color": "#FFE8B3",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 152",
+    "name": "Pale Gold",
+    "hex_color": "#FFD699",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 153",
+    "name": "Pale Salmon",
+    "hex_color": "#FFD4B3",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 154",
+    "name": "Pale Rose",
+    "hex_color": "#FFCCDD",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 156",
+    "name": "Chocolate",
+    "hex_color": "#884422",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 157",
+    "name": "Pink",
+    "hex_color": "#FFB3D9",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 158",
+    "name": "Deep Orange",
+    "hex_color": "#FF5500",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 159",
+    "name": "No Color Straw",
+    "hex_color": "#FFF8E6",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 161",
+    "name": "Slate Blue",
+    "hex_color": "#5577AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 162",
+    "name": "Bastard Amber",
+    "hex_color": "#FFE199",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 164",
+    "name": "Flame Red",
+    "hex_color": "#FF3300",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 165",
+    "name": "Daylight Blue",
+    "hex_color": "#88CCFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 169",
+    "name": "Lilac Tint",
+    "hex_color": "#E6CCFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 170",
+    "name": "Deep Lavender",
+    "hex_color": "#9966CC",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 172",
+    "name": "Lagoon Blue",
+    "hex_color": "#0099BB",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 174",
+    "name": "Dark Steel Blue",
+    "hex_color": "#336699",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 176",
+    "name": "Loving Amber",
+    "hex_color": "#FFB366",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 179",
+    "name": "Chrome Orange",
+    "hex_color": "#FF6600",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 180",
+    "name": "Dark Lavender",
+    "hex_color": "#7755AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 181",
+    "name": "Congo Blue",
+    "hex_color": "#0077DD",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 182",
+    "name": "Light Red",
+    "hex_color": "#FF7799",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 183",
+    "name": "Moonlight Blue",
+    "hex_color": "#99CCFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 192",
+    "name": "Flesh Pink",
+    "hex_color": "#FFD4CC",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 194",
+    "name": "Surprise Pink",
+    "hex_color": "#FF99CC",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 196",
+    "name": "True Blue",
+    "hex_color": "#0055CC",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 197",
+    "name": "Alice Blue",
+    "hex_color": "#AADDFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 198",
+    "name": "Palace Blue",
+    "hex_color": "#3366AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 199",
+    "name": "Regal Blue",
+    "hex_color": "#0044BB",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 200",
+    "name": "Double CT Blue",
+    "hex_color": "#88BBFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 201",
+    "name": "Full CT Blue",
+    "hex_color": "#99CCFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 202",
+    "name": "Half CT Blue",
+    "hex_color": "#CCDDFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 203",
+    "name": "Quarter CT Blue",
+    "hex_color": "#E6F0FF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 204",
+    "name": "Full CT Orange",
+    "hex_color": "#FFCC66",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 205",
+    "name": "Half CT Orange",
+    "hex_color": "#FFE6AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 206",
+    "name": "Quarter CT Orange",
+    "hex_color": "#FFF2CC",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 209",
+    "name": ".3 Neutral Density",
+    "hex_color": "#B3B3B3",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 210",
+    "name": ".6 Neutral Density",
+    "hex_color": "#808080",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 211",
+    "name": ".9 Neutral Density",
+    "hex_color": "#4D4D4D",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 216",
+    "name": "White Diffusion",
+    "hex_color": "#FFFFFF",
+    "is_diffuser": true
+  },
+  {
+    "number": "LEE 220",
+    "name": "White Frost",
+    "hex_color": "#FFFFFF",
+    "is_diffuser": true
+  },
+  {
+    "number": "LEE 223",
+    "name": "Eighth White Diffusion",
+    "hex_color": "#FFFFFF",
+    "is_diffuser": true
+  },
+  {
+    "number": "LEE 226",
+    "name": "UV",
+    "hex_color": "#9933FF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 241",
+    "name": "Lee Fluorescent Green",
+    "hex_color": "#00FF33",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 242",
+    "name": "Lee Fluorescent Red",
+    "hex_color": "#FF0033",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 243",
+    "name": "Lee Fluorescent Blue",
+    "hex_color": "#0033FF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 244",
+    "name": "Lee Fluorescent Yellow",
+    "hex_color": "#FFFF00",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 245",
+    "name": "Lee Fluorescent Magenta",
+    "hex_color": "#FF00FF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 246",
+    "name": "Lee Fluorescent Orange",
+    "hex_color": "#FF6600",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 247",
+    "name": "Lee Fluorescent Minus Green",
+    "hex_color": "#FF99FF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 281",
+    "name": "Three Quarter CT Blue",
+    "hex_color": "#AADDFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 285",
+    "name": "Three Quarter CT Orange",
+    "hex_color": "#FFD499",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 299",
+    "name": "Eighth CT Orange",
+    "hex_color": "#FFF9E6",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 328",
+    "name": "Follies Pink",
+    "hex_color": "#FF88BB",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 353",
+    "name": "Lighter Blue",
+    "hex_color": "#B3DDFF",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 778",
+    "name": "Millennium Gold",
+    "hex_color": "#FFCC00",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 790",
+    "name": "Moroccan Pink",
+    "hex_color": "#FF99AA",
+    "is_diffuser": false
+  },
+  {
+    "number": "LEE 798",
+    "name": "Chrysalis Pink",
+    "hex_color": "#FFAACC",
+    "is_diffuser": false
+  }
+]
