@@ -432,9 +432,15 @@ paths:
       description: |
         Génère et télécharge un fichier PDF du plan de feu avec:
         - Le fond de scène en arrière-plan
-        - Tous les projecteurs positionnés avec leurs labels
-        - Les projecteurs LED en vert, les autres en rouge
-        - Les gélatines affichées entre parenthèses
+        - Tous les projecteurs positionnés avec leurs labels, angles de rotation et gélatines
+        - Option de filtrer par niveau de profondeur (z_level)
+        - Les labels incluent l'univers DMX, l'adresse et le canal si disponibles
+        - Les gélatines affichées avec leur numéro et couleur
+        
+        Niveaux de profondeur disponibles:
+        - 0: Sol
+        - 1: Perroq
+        - 2: Plafond
       operationId: exportLightmapPdf
       parameters:
         - name: lightmap_id
@@ -443,6 +449,21 @@ paths:
           description: ID du plan de feu à exporter
           schema:
             type: integer
+        - name: z_level
+          in: query
+          required: false
+          description: |
+            Filtre par niveau de profondeur (0-2).
+            - 0: Sol (nom du fichier inclura "Sol")
+            - 1: Perroq (nom du fichier inclura "Perroq")
+            - 2: Plafond (nom du fichier inclura "Plafond")
+            
+            Si omis, tous les projecteurs sont inclus dans l'export.
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 2
+          example: 1
       responses:
         '200':
           description: Fichier PDF du plan de feu
@@ -452,7 +473,10 @@ paths:
                 type: string
                 format: binary
         '400':
-          description: Plan de feu sans fond de scène
+          description: |
+            Données invalides:
+            - Plan de feu sans fond de scène
+            - Paramètre z_level invalide (doit être un entier entre 0 et 2)
           content:
             application/json:
               schema:
@@ -464,7 +488,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '500':
-          description: Fichier de fond de scène introuvable sur le serveur
+          description: Fichier de fond de scène ou icône de projecteur introuvable sur le serveur
           content:
             application/json:
               schema:
