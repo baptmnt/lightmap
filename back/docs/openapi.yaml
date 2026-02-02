@@ -1,0 +1,689 @@
+openapi: 3.0.3
+info:
+  title: Lightmap API
+  description: |
+    API pour gérer les plans de feu (lightmaps), projecteurs, gélatines et fonds de scène.
+    
+    Cette API permet de:
+    - Créer et gérer des plans de feu
+    - Positionner des projecteurs sur les plans
+    - Gérer les gélatines et leurs associations
+    - Exporter les plans en PDF
+  version: 1.0.0
+  contact:
+    name: Lightmap API Support
+
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Serveur de développement local
+
+tags:
+  - name: Lightmaps
+    description: Gestion des plans de feu
+  - name: Lightmap Projectors
+    description: Gestion des projecteurs sur les plans de feu
+  - name: Projectors
+    description: Catalogue des projecteurs disponibles
+  - name: Backgrounds
+    description: Fonds de scène disponibles
+  - name: Gelatines
+    description: Gélatines et filtres disponibles
+  - name: Export
+    description: Export des plans de feu
+
+paths:
+  /lightmaps:
+    get:
+      tags:
+        - Lightmaps
+      summary: Liste tous les plans de feu
+      description: Retourne une liste résumée de tous les plans de feu
+      operationId: listLightmaps
+      responses:
+        '200':
+          description: Liste des plans de feu
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightmapSummary'
+    
+    post:
+      tags:
+        - Lightmaps
+      summary: Crée un nouveau plan de feu
+      description: Crée un nouveau plan de feu avec un nom, une date optionnelle et un fond de scène
+      operationId: createLightmap
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - background_id
+              properties:
+                name:
+                  type: string
+                  description: Nom du plan de feu
+                  example: "Concert Principal"
+                background_id:
+                  type: integer
+                  description: ID du fond de scène à utiliser
+                  example: 1
+                date:
+                  type: string
+                  format: date
+                  description: Date du plan de feu (format YYYY-MM-DD)
+                  example: "2026-02-15"
+      responses:
+        '201':
+          description: Plan de feu créé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  redirect:
+                    type: string
+                    example: "/lightmaps/1"
+        '400':
+          description: Données invalides
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Fond de scène non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /lightmaps/{lightmap_id}:
+    get:
+      tags:
+        - Lightmaps
+      summary: Récupère un plan de feu spécifique
+      description: Retourne les détails complets d'un plan de feu incluant tous ses projecteurs
+      operationId: getLightmap
+      parameters:
+        - name: lightmap_id
+          in: path
+          required: true
+          description: ID du plan de feu
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Détails du plan de feu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lightmap'
+        '404':
+          description: Plan de feu non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /lightmaps/{lightmap_id}/projectors:
+    post:
+      tags:
+        - Lightmap Projectors
+      summary: Ajoute un projecteur à un plan de feu
+      description: Ajoute un projecteur avec sa position, son label et ses paramètres sur un plan de feu
+      operationId: addProjectorToLightmap
+      parameters:
+        - name: lightmap_id
+          in: path
+          required: true
+          description: ID du plan de feu
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - projector_id
+                - label
+                - x
+                - y
+              properties:
+                projector_id:
+                  type: integer
+                  description: ID du type de projecteur
+                  example: 1
+                label:
+                  type: string
+                  description: Label du projecteur sur le plan
+                  example: "PC 1"
+                x:
+                  type: number
+                  format: float
+                  description: Position X (0-1 normalisé ou pixels absolus)
+                  example: 0.5
+                y:
+                  type: number
+                  format: float
+                  description: Position Y (0-1 normalisé ou pixels absolus)
+                  example: 0.3
+                z_level:
+                  type: integer
+                  description: Niveau de profondeur pour l'ordre d'affichage
+                  default: 0
+                  example: 1
+                angle:
+                  type: number
+                  format: float
+                  description: Angle de rotation en degrés
+                  default: 0.0
+                  example: 45.0
+                size:
+                  type: number
+                  format: float
+                  description: Facteur d'échelle
+                  default: 1.0
+                  example: 1.2
+                gelatines:
+                  type: array
+                  description: Liste des IDs de gélatines à associer
+                  items:
+                    type: integer
+                  example: [1, 2]
+                mode_id:
+                  type: integer
+                  description: ID du mode DMX
+                  nullable: true
+                  example: 1
+                channel:
+                  type: integer
+                  description: Canal DMX
+                  nullable: true
+                  example: 1
+                universe:
+                  type: integer
+                  description: Univers DMX
+                  nullable: true
+                  example: 1
+                address:
+                  type: integer
+                  description: Adresse DMX
+                  nullable: true
+                  example: 1
+      responses:
+        '201':
+          description: Projecteur ajouté avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LightmapProjector'
+        '400':
+          description: Données invalides
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Plan de feu ou projecteur non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /lightmaps/{lightmap_id}/projectors/{projector_id}:
+    put:
+      tags:
+        - Lightmap Projectors
+      summary: Met à jour un projecteur sur un plan de feu
+      description: Modifie les propriétés d'un projecteur existant sur un plan de feu
+      operationId: updateLightmapProjector
+      parameters:
+        - name: lightmap_id
+          in: path
+          required: true
+          description: ID du plan de feu
+          schema:
+            type: integer
+        - name: projector_id
+          in: path
+          required: true
+          description: ID du projecteur sur le plan
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                  description: Label du projecteur
+                  example: "PC 2"
+                x:
+                  type: number
+                  format: float
+                  description: Position X
+                  example: 0.6
+                y:
+                  type: number
+                  format: float
+                  description: Position Y
+                  example: 0.4
+                z_level:
+                  type: integer
+                  description: Niveau de profondeur
+                  example: 2
+                angle:
+                  type: number
+                  format: float
+                  description: Angle de rotation
+                  example: 90.0
+                size:
+                  type: number
+                  format: float
+                  description: Facteur d'échelle
+                  example: 1.5
+                gelatine:
+                  type: string
+                  description: Gélatine associée
+                  nullable: true
+                mode_id:
+                  type: integer
+                  description: ID du mode DMX
+                  nullable: true
+                channel:
+                  type: integer
+                  description: Canal DMX
+                  nullable: true
+                universe:
+                  type: integer
+                  description: Univers DMX
+                  nullable: true
+                address:
+                  type: integer
+                  description: Adresse DMX
+                  nullable: true
+      responses:
+        '200':
+          description: Projecteur mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LightmapProjector'
+        '404':
+          description: Plan de feu ou projecteur non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      tags:
+        - Lightmap Projectors
+      summary: Supprime un projecteur d'un plan de feu
+      description: Retire un projecteur d'un plan de feu
+      operationId: deleteLightmapProjector
+      parameters:
+        - name: lightmap_id
+          in: path
+          required: true
+          description: ID du plan de feu
+          schema:
+            type: integer
+        - name: projector_id
+          in: path
+          required: true
+          description: ID du projecteur sur le plan
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Projecteur supprimé avec succès
+        '404':
+          description: Plan de feu ou projecteur non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /projectors:
+    get:
+      tags:
+        - Projectors
+      summary: Liste tous les projecteurs disponibles
+      description: Retourne le catalogue de tous les types de projecteurs disponibles
+      operationId: listProjectors
+      parameters:
+        - name: is_led
+          in: query
+          required: false
+          description: Filtre par type LED (true/false)
+          schema:
+            type: string
+            enum: [true, false, '1', '0', yes, no]
+          example: "true"
+      responses:
+        '200':
+          description: Liste des projecteurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Projector'
+
+  /backgrounds:
+    get:
+      tags:
+        - Backgrounds
+      summary: Liste tous les fonds de scène disponibles
+      description: Retourne la liste de tous les fonds de scène qui peuvent être utilisés pour les plans de feu
+      operationId: listBackgrounds
+      responses:
+        '200':
+          description: Liste des fonds de scène
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Background'
+
+  /gelatines:
+    get:
+      tags:
+        - Gelatines
+      summary: Liste toutes les gélatines disponibles
+      description: Retourne le catalogue de toutes les gélatines et filtres disponibles
+      operationId: listGelatines
+      parameters:
+        - name: is_diffuser
+          in: query
+          required: false
+          description: Filtre par type diffuseur (true/false)
+          schema:
+            type: string
+            enum: [true, false, '1', '0', yes, no]
+          example: "false"
+      responses:
+        '200':
+          description: Liste des gélatines
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Gelatine'
+
+  /lightmaps/{lightmap_id}/export/pdf:
+    get:
+      tags:
+        - Export
+      summary: Exporte un plan de feu en PDF
+      description: |
+        Génère et télécharge un fichier PDF du plan de feu avec:
+        - Le fond de scène en arrière-plan
+        - Tous les projecteurs positionnés avec leurs labels
+        - Les projecteurs LED en vert, les autres en rouge
+        - Les gélatines affichées entre parenthèses
+      operationId: exportLightmapPdf
+      parameters:
+        - name: lightmap_id
+          in: path
+          required: true
+          description: ID du plan de feu à exporter
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Fichier PDF du plan de feu
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Plan de feu sans fond de scène
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Plan de feu non trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Fichier de fond de scène introuvable sur le serveur
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description de l'erreur
+          example: "Lightmap not found"
+
+    Background:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID unique du fond de scène
+          example: 1
+        name:
+          type: string
+          description: Nom du fond de scène
+          example: "Salle principale"
+        filename:
+          type: string
+          description: Nom du fichier image
+          example: "assets/backgrounds/salle_principale.png"
+
+    Gelatine:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID unique de la gélatine
+          example: 1
+        number:
+          type: string
+          description: Numéro de référence de la gélatine
+          example: "L201"
+        name:
+          type: string
+          description: Nom de la gélatine
+          example: "Full C.T. Blue"
+        hex_color:
+          type: string
+          description: Couleur en format hexadécimal
+          pattern: '^#[0-9A-Fa-f]{6}$'
+          example: "#0000FF"
+        is_diffuser:
+          type: boolean
+          description: Indique si c'est un diffuseur
+          example: false
+
+    Mode:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID unique du mode
+          example: 1
+        name:
+          type: string
+          description: Nom du mode DMX
+          example: "16-bit"
+        channels:
+          type: integer
+          description: Nombre de canaux utilisés
+          example: 16
+
+    Projector:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID unique du projecteur
+          example: 1
+        name:
+          type: string
+          description: Nom du type de projecteur
+          example: "PC 1kW"
+        filename:
+          type: string
+          description: Nom du fichier image du projecteur
+          nullable: true
+          example: "assets/projectors/pc_1kw.png"
+        size:
+          type: integer
+          description: Taille par défaut en pixels
+          nullable: true
+          example: 512
+        is_led:
+          type: boolean
+          description: Indique si c'est un projecteur LED
+          example: false
+        modes:
+          type: array
+          description: Modes DMX disponibles
+          items:
+            $ref: '#/components/schemas/Mode'
+
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID unique du groupe
+          example: 1
+        name:
+          type: string
+          description: Nom du groupe
+          example: "Face"
+
+    LightmapProjector:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID unique du projecteur sur le plan
+          example: 1
+        label:
+          type: string
+          description: Label du projecteur sur le plan
+          example: "PC 1"
+        lightmap_id:
+          type: integer
+          description: ID du plan de feu
+          example: 1
+        projector:
+          $ref: '#/components/schemas/Projector'
+        x:
+          type: number
+          format: float
+          description: Position X (0-1 normalisé ou pixels absolus)
+          example: 0.5
+        y:
+          type: number
+          format: float
+          description: Position Y (0-1 normalisé ou pixels absolus)
+          example: 0.3
+        z_level:
+          type: integer
+          description: Niveau de profondeur pour l'ordre d'affichage
+          example: 1
+        gelatines:
+          type: array
+          description: Liste des gélatines associées
+          items:
+            $ref: '#/components/schemas/Gelatine'
+        mode:
+          allOf:
+            - $ref: '#/components/schemas/Mode'
+          nullable: true
+          description: Mode DMX utilisé
+        channel:
+          type: integer
+          description: Canal DMX
+          nullable: true
+          example: 1
+        universe:
+          type: integer
+          description: Univers DMX
+          nullable: true
+          example: 1
+        address:
+          type: integer
+          description: Adresse DMX
+          nullable: true
+          example: 1
+        groups:
+          type: array
+          description: Groupes auxquels appartient le projecteur
+          items:
+            $ref: '#/components/schemas/Group'
+
+    LightmapSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID unique du plan de feu
+          example: 1
+        name:
+          type: string
+          description: Nom du plan de feu
+          example: "Concert Principal"
+        date:
+          type: string
+          format: date
+          description: Date du plan de feu
+          nullable: true
+          example: "2026-02-15"
+
+    Lightmap:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID unique du plan de feu
+          example: 1
+        name:
+          type: string
+          description: Nom du plan de feu
+          example: "Concert Principal"
+        date:
+          type: string
+          format: date
+          description: Date du plan de feu
+          nullable: true
+          example: "2026-02-15"
+        background:
+          allOf:
+            - $ref: '#/components/schemas/Background'
+          nullable: true
+          description: Fond de scène utilisé
+        projectors:
+          type: array
+          description: Liste de tous les projecteurs sur le plan
+          items:
+            $ref: '#/components/schemas/LightmapProjector'
