@@ -17,6 +17,13 @@ def _resolve_background_path(filename: str) -> Path:
         abort(500, description="Background file not found on server")
     return path
 
+def _resolve_projector_path(filename: str) -> Path:
+    base_dir = Path(__file__).resolve().parent.parent
+    path = base_dir / filename
+    if not path.exists():
+        abort(500, description="Projector file not found on server")
+    return path
+
 
 def _position_to_pixels(value: float, maximum: int) -> float:
     # If coordinates are normalized (0..1), scale to pixels; otherwise assume absolute pixels.
@@ -25,6 +32,7 @@ def _position_to_pixels(value: float, maximum: int) -> float:
 
 @api_bp.get("/lightmaps/<int:lightmap_id>/export/pdf")
 def export_lightmap_pdf(lightmap_id: int):
+    print("="*20)
     lm = Lightmap.query.get(lightmap_id)
     if not lm:
         abort(404, description="Lightmap not found")
@@ -42,19 +50,74 @@ def export_lightmap_pdf(lightmap_id: int):
     def _draw_projector(lp):
         px = _position_to_pixels(lp.x, bg_width)
         py = _position_to_pixels(lp.y, bg_height)
-        radius = 8
-        fill_color = colors.green if lp.projector and getattr(lp.projector, "is_led", False) else colors.red
-        pdf.setFillColor(fill_color)
-        pdf.circle(px, py, radius, fill=1, stroke=0)
+        py = background_img.height - py  # Invert Y axis for PDF coordinates
 
-        label = lp.label
-        if getattr(lp, "gelatines", None):
-            gels = ", ".join(g.number for g in lp.gelatines)
-            label = f"{label} ({gels})"
+        # insert projector icon
+        proj_icon_path = _resolve_projector_path(lp.projector.filename)
+        print(proj_icon_path)
 
+        # Get image dimensions
+        proj_img = Image.open(proj_icon_path)
+        width, height = proj_img.size
+        
+        # Apply rotation if angle is set
+        if lp.angle != 0:
+            pdf.saveState()
+            # Translate to center of the image
+            center_x = px + width / 2
+            center_y = py + height / 2
+            pdf.translate(center_x, center_y)
+            # Rotate (angle is in degrees)
+            pdf.rotate(lp.angle)
+            # Draw image centered on rotation point
+            pdf.drawImage(str(proj_icon_path), -width / 2, -height / 2, width=width, height=height)
+            pdf.restoreState()
+        else:
+            pdf.drawImage(str(proj_icon_path), px, py, width=width, height=height)
+        
+        print(width, height)
+
+        if lp.universe and lp.address and lp.channel:
+            label = f"{lp.universe}/{lp.address} => {lp.channel}"
+        elif lp.channel:
+            label = f"{lp.channel}"
+
+
+        pdf.setFont("Helvetica", 12)
+        string_size = pdf.stringWidth(label, "Helvetica", 12)
+        label_x = px + width / 2 - string_size / 2
+        label_y = py +height + 5
+        pdf.setFillColor(colors.white)
+        pdf.rect(label_x - 2, label_y - 2, string_size + 4, 14, fill=1, stroke=0)
         pdf.setFillColor(colors.black)
-        pdf.setFont("Helvetica", 8)
-        pdf.drawString(px + radius + 2, py, label)
+        pdf.drawString(label_x, label_y, label)
+
+        # for each gelatine, draw the name and a little circle with color (at the bottom of the projector)
+        if getattr(lp, "gelatines", None):
+            for i, g in enumerate(lp.gelatines):
+                gel_label = g.number
+                gel_string_size = pdf.stringWidth(gel_label, "Helvetica", 10)
+
+                radius = 6
+
+                gel_x = px + width/2 - gel_string_size/2 + radius
+                gel_y = py - height +30  + i * 15
+
+                pdf.setFillColor(colors.white)
+                pdf.rect(gel_x - 1, gel_y - 2, gel_string_size +3, 13, fill=1, stroke=0)
+
+                pdf.setFillColor(colors.black)
+                pdf.setFont("Helvetica", 10)
+                pdf.drawString(gel_x, gel_y, gel_label)
+
+                # draw color circle
+                circle_x = gel_x - radius - 2
+                circle_y = gel_y + 4
+
+
+                pdf.setFillColor(colors.HexColor(g.hex_color))
+                stroke = 1 if g.is_diffuser else 0
+                pdf.circle(circle_x, circle_y, radius, stroke=stroke, fill=1)
 
     for lp in sorted(lm.projectors, key=lambda p: p.z_level):
         _draw_projector(lp)
