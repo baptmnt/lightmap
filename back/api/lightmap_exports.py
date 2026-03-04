@@ -1,7 +1,7 @@
 from io import BytesIO
 from pathlib import Path
 
-from flask import abort, send_file
+from flask import abort, request, send_file
 from PIL import Image
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
@@ -38,6 +38,17 @@ def export_lightmap_pdf(lightmap_id: int):
         abort(404, description="Lightmap not found")
     if not lm.background or not lm.background.filename:
         abort(400, description="Lightmap has no background to export")
+    
+
+    # Paramètre optionnel z_level
+    z_level = request.args.get('z_level')
+    if z_level is not None:
+        try:
+            z_level = int(z_level)
+            if z_level < 0 or z_level > 2:
+                abort(400, description="z_level parameter must be between 0 and 2")
+        except ValueError:
+            abort(400, description="Invalid z_level parameter. Must be an integer between 0 and 2.")
 
     bg_path = _resolve_background_path(lm.background.filename)
     background_img = Image.open(bg_path)
@@ -120,7 +131,8 @@ def export_lightmap_pdf(lightmap_id: int):
                 pdf.circle(circle_x, circle_y, radius, stroke=stroke, fill=1)
 
     for lp in sorted(lm.projectors, key=lambda p: p.z_level):
-        _draw_projector(lp)
+        if z_level is None or lp.z_level == z_level:
+            _draw_projector(lp)
 
     pdf.showPage()
     pdf.save()
@@ -129,6 +141,15 @@ def export_lightmap_pdf(lightmap_id: int):
     filename = f"Plan de feu - {lm.name}"
     if lm.date:
         filename += f" - {lm.date}"
+    
+    if z_level is not None:
+        if z_level == 0:
+            filename += " - Sol"
+        elif z_level == 1:
+            filename += " - Perroq"
+        elif z_level == 2:
+            filename += " - Plafond"
+
     filename += ".pdf"
 
     return send_file(
