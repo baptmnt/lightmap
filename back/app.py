@@ -31,6 +31,21 @@ app.register_blueprint(api_bp)
 def hello():
     return jsonify({'message': 'Bienvenue sur Flask avec PostgreSQL et SQLAlchemy!'})
 
+# Tests de vie
+@app.route('/health/liveness', methods=['GET'])
+def health_liveness():
+    return response("", 200)
+
+@app.route('/health/readiness', methods=['GET'])
+def health_readiness():
+    # Check DB connection
+    try:
+        with app.app_context():
+            db.session.execute('SELECT 1')
+        return response("", 200)
+    except Exception as e:
+        return response(f"Database connection error: {str(e)}", 500)
+
 # Route pour servir le fichier OpenAPI
 @app.route('/api/v1/openapi.yaml', methods=['GET'])
 def openapi_spec():
