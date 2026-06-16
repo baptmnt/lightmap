@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: lightmap
+      POSTGRES_USER: lightmap
+      POSTGRES_PASSWORD: lightmap
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lightmap -d lightmap"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    build:
+      context: ./back
+    environment:
+      DATABASE_URL: postgresql://lightmap:lightmap@db:5432/lightmap
+    command: alembic upgrade head
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  backend:
+    build:
+      context: ./back
+    environment:
+      DATABASE_URL: postgresql://lightmap:lightmap@db:5432/lightmap
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  postgres_data:
